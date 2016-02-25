@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" ng-app ="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Battleship</title>
+    <link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+<div class="row">
+    <div class="container">
+        <button class="btn btn-primary"  ui-sref="main">Home</button>
+        <button ui-sref="start" class="btn btn-primary">Start a new game</button>
+        <button class="btn btn-primary" ui-sref="results">Results</button>
+        <hr>
+        <ui-view></ui-view>
+    </div>
+</div>
+<script src="js/index.js"></script>
+</body>
+</html>

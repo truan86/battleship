@@ -1,0 +1,20 @@
+<header class=" headerStart col-lg-12"><h1 class="col-lg-offset-3 col-lg-6">Battle ship game</h1></header>
+<div class="row">
+    <aside class="jumbotron col-lg-3">
+        <h3>Place Your Ships</h3>
+        <ul>
+            <li><a href="">smoll ship</a></li>
+            <li><a href="">middle ship</a></li>
+            <li><a href="">huge ship</a></li>
+        </ul>
+        <p><a class="btn btn-primary btn-lg" role="button">Узнать больше</a></p>
+    </aside>
+    <section class="mainField pull-right">
+
+        <div ng-repeat="cell in start.gameField track by $index"
+             class="fieldCell"  ng-class="{'ship': cell.ship}" data-x={{cell.x}} data-y={{cell.y}}>
+            {{cell.x}}{{cell.y}}
+        </div>
+
+    </section>
+</div>
