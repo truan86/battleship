@@ -1,10 +1,14 @@
 @import "../../node_modules/bootstrap/less/bootstrap";
-body{
+
+body {
   background-color: #ddd;
-  .headerStart h1{
+  .headerStart h1 {
     text-align: center;
   }
-  .mainField{
+  .PlaceYourShips ul li a{
+    cursor: pointer;
+  }
+  .mainField {
     width: 430px;
     height: 430px;
     padding: 5px;
@@ -12,7 +16,7 @@ body{
     border-radius: 5px;
     position: relative;
   }
-  .fieldCell{
+  .fieldCell {
     height: 40px;
     width: 40px;
     display: inline-block;
@@ -20,7 +24,11 @@ body{
     border-radius: 5px;
     margin: 1px
   }
-  .ship{
+  .hover {
+    background-color: grey;
+  }
+  .ship {
     background-color: black;
   }
+
 }

@@ -5,12 +5,26 @@ class GameService {
         for (let i = 0; i <= fieldSize; i++) {
             for (let j = 0; j <= fieldSize; j++) {
                 this.gameField.push({
-                    "x": i,
-                    "y": j,
-                    "ship":false
+                    "y": i,
+                    "x": j,
+                    "ship": false,
+                    "hover": false
                 });
             }
         }
+        this.shipList = [{
+            "name": "Small Ship",
+            "size": 1,
+            "hide": false
+        }, {
+            "name": "Middle Ship",
+            "size": 3,
+            "hide": false
+        }, {
+            "name": "Huge Ship",
+            "size": 5,
+            "hide": false
+        }];
     }
 }
 

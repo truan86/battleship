@@ -9,7 +9,7 @@ import resultsTemplate from '../partials/results.html';
 import MainController from './main/main.js';
 import StartController from './start/start';
 import ResultsController from './results/results';
-import GameService from './service/service'
+import GameService from './service/service';
 
 angular.module("app", [angularUiRouter])
     .controller('MainController', MainController)
