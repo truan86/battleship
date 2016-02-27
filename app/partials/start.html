@@ -1,26 +1,31 @@
 <header class=" headerStart col-lg-12"><h1 class="col-lg-offset-3 col-lg-6">Battle ship game</h1></header>
 <div class="row">
-    <aside class="jumbotron col-lg-3 PlaceYourShips">
+    <aside class="PlaceYourShips">
         <h3>Place Your Ships</h3>
         <ul>
             <li ng-repeat="ship in start.shipList track by $index"><a ng-click="start.sizeShipFn(ship.size,$index)"
-                                                                      ng-hide="ship.hide">{{ship.name}}
-                {{start.sizeShip}}</a>
+                                                                      ng-hide="ship.hide">{{ship.name}} </a>
             </li>
 
         </ul>
         <p><a ng-click="(start.TurnTheShip == true)?start.TurnTheShip = false:start.TurnTheShip = true"
               class="btn btn-primary btn-lg" role="button">Turn the ship {{start.TurnTheShip}}</a></p>
     </aside>
-    <section class="mainField pull-right">
+    <section class="mainField ">
 
         <div ng-repeat="cell in start.gameField track by $index"
              ng-mouseover="start.hovered($index)"
              ng-mouseleave="start.lieved($index)"
              ng-click="start.setShip($index)"
-             class="fieldCell" ng-class="{'ship': cell.ship , 'hover':cell.hover }" data-x={{cell.x}} data-y={{cell.y}}>
-            {{cell.x}}{{cell.y}}
+             class="fieldCell" ng-class="{'ship': cell.ship , 'hover':cell.hover }" id="x:{{cell.x}}y:{{cell.y}}">
+            <p>{{cell.x}} {{cell.y}}</p>
         </div>
+    </section>
 
+    <section class="enemyField ">
+
+        <div class="enemyCell" ng-repeat="cellEnemy in start.enemyField track by $index">
+            <p>{{cellEnemy.x}} {{cellEnemy.y}}</p>
+        </div>
     </section>
 </div>
