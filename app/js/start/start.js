@@ -16,7 +16,7 @@ class StartController {
     hovered(id) {
         if (this.TurnTheShip === false) {
             if (+(this.gameField[id].x) + this.sizeShip < 11) {
-                if (this.howCloseTheShip(id)) {
+                if (this.howCloseTheShip(id, this.sizeShip, this.TurnTheShip)) {
                     for (let i = id; i < id + this.sizeShip; i++) {
                         this.gameField[i].hover = true;
                     }
@@ -25,7 +25,7 @@ class StartController {
         }
         else {
             if (+(this.gameField[id].y) + this.sizeShip < 11) {
-                if (this.howCloseTheShip(id)) {
+                if (this.howCloseTheShip(id, this.sizeShip, this.TurnTheShip)) {
                     let countCell = id;
                     for (let i = 0; i < this.sizeShip; i++) {
                         this.gameField[countCell].hover = true;
@@ -39,7 +39,7 @@ class StartController {
     lieved(id) {
         if (this.TurnTheShip === false) {
             if (+(this.gameField[id].x) + this.sizeShip < 11) {
-                if (this.howCloseTheShip(id)) {
+                if (this.howCloseTheShip(id, this.sizeShip, this.TurnTheShip)) {
                     for (let i = id; i < id + this.sizeShip; i++) {
                         this.gameField[i].hover = false;
                     }
@@ -48,7 +48,7 @@ class StartController {
         }
         else {
             if (+(this.gameField[id].y) + this.sizeShip < 11) {
-                if (this.howCloseTheShip(id)) {
+                if (this.howCloseTheShip(id, this.sizeShip, this.TurnTheShip)) {
                     let countCell = id;
                     for (let i = 0; i < this.sizeShip; i++) {
                         this.gameField[countCell].hover = false;
@@ -62,7 +62,7 @@ class StartController {
     setShip(id) {
         if (this.TurnTheShip === false) {
             if (+(this.gameField[id].x) + this.sizeShip < 11) {
-                if (this.howCloseTheShip(id)) {
+                if (this.howCloseTheShip(id, this.sizeShip, this.TurnTheShip)) {
                     for (let i = id; i < id + this.sizeShip; i++) {
                         this.gameField[i].ship = true;
                     }
@@ -73,7 +73,7 @@ class StartController {
         }
         else {
             if (+(this.gameField[id].y) + this.sizeShip < 11) {
-                if (this.howCloseTheShip(id)) {
+                if (this.howCloseTheShip(id, this.sizeShip, this.TurnTheShip)) {
                     let countCell = id;
                     for (let i = 0; i < this.sizeShip; i++) {
                         this.gameField[countCell].ship = true;
@@ -86,24 +86,48 @@ class StartController {
         }
     }
 
-    howCloseTheShip(id) {
+    howCloseTheShip(id, sizeShip, TurnTheShip) {
         let CloseTheShip = 0;
-        this.gameField.forEach(function (item, i) {
-            if (i == id - 11 ||
-                i == id - 10 ||
-                i == id - 9 ||
-                i == id - 1 ||
-                i == id ||
-                i == id + 1 ||
-                i == id + 9 ||
-                i == id + 10 ||
-                i == id + 11
-            ) {
-                if (item.ship === true) {
-                    CloseTheShip += 1;
-                }
+        if (TurnTheShip === false) {
+            for (let i = 0; i < sizeShip; i++) {
+                this.gameField.forEach(function (item, num) {
+                    if (num == (id + i) - 11 ||
+                        num == (id + i) - 10 ||
+                        num == (id + i) - 9 ||
+                        num == (id + i) - 1 ||
+                        num == (id + i) ||
+                        num == (id + i) + 1 ||
+                        num == (id + i) + 9 ||
+                        num == (id + i) + 10 ||
+                        num == (id + i) + 11) {
+                        if (item.ship === true) {
+                            CloseTheShip += 1;
+                        }
+                    }
+                });
             }
-        });
+        }
+        else {
+            let countCell = id;
+            for (let i = 0; i < sizeShip; i++) {
+                this.gameField.forEach(function (item, num) {
+                    if (num == (countCell) - 11 ||
+                        num == (countCell) - 10 ||
+                        num == (countCell) - 9 ||
+                        num == (countCell) - 1 ||
+                        num == (countCell) ||
+                        num == (countCell) + 1 ||
+                        num == (countCell) + 9 ||
+                        num == (countCell) + 10 ||
+                        num == (countCell) + 11) {
+                        if (item.ship === true) {
+                            CloseTheShip += 1;
+                        }
+                    }
+                });
+                countCell += 10;
+            }
+        }
         if (CloseTheShip == 0) {
             return true;
         }
