@@ -6,11 +6,28 @@ class StartController {
         this.shipList = GameService.shipList;
         this.sizeShip = 0;
         this.TurnTheShip = false;
+        this.hideStartGame = true;
+        this.showEnemyField = false;
     }
 
     sizeShipFn(size, id) {
         this.sizeShip = size;
         this.shipListId = id;
+    }
+
+
+    startGameFn() {
+        this.enemyField = this.gameField;
+        this.showEnemyField = true;
+    }
+
+    shot(id) {
+        if (this.enemyField[id].ship === false) {
+            this.enemyField[id].missed = true;
+        }
+        else {
+            this.enemyField[id].hit = true;
+        }
     }
 
     hovered(id) {
@@ -68,6 +85,15 @@ class StartController {
                     }
                     this.sizeShip = 0;
                     this.shipList[this.shipListId].hide = true;
+                    let countHidenShipList = 0;
+                    this.shipList.forEach(function (item) {
+                        if (item.hide == true) {
+                            countHidenShipList += 1;
+                        }
+                    });
+                    if (countHidenShipList == this.shipList.length) {
+                        this.hideStartGame = false;
+                    }
                 }
             }
         }
@@ -81,6 +107,15 @@ class StartController {
                     }
                     this.sizeShip = 0;
                     this.shipList[this.shipListId].hide = true;
+                    let countHidenShipList = 0;
+                    this.shipList.forEach(function (item) {
+                        if (item.hide == true) {
+                            countHidenShipList += 1;
+                        }
+                    });
+                    if (countHidenShipList == this.shipList.length) {
+                        this.hideStartGame = false;
+                    }
                 }
             }
         }
@@ -90,45 +125,105 @@ class StartController {
         let CloseTheShip = 0;
         if (TurnTheShip === false) {
             for (let i = 0; i < sizeShip; i++) {
-                this.gameField.forEach(function (item, num) {
-                    if (num == (id + i) - 11 ||
-                        num == (id + i) - 10 ||
-                        num == (id + i) - 9 ||
-                        num == (id + i) - 1 ||
-                        num == (id + i) ||
-                        num == (id + i) + 1 ||
-                        num == (id + i) + 9 ||
-                        num == (id + i) + 10 ||
-                        num == (id + i) + 11) {
-                        if (item.ship === true) {
-                            CloseTheShip += 1;
+                if (this.gameField[id + i].x == 9) {
+                    this.gameField.forEach(function (item, num) {
+                        if (num == (id + i) - 11 ||
+                            num == (id + i) - 10 ||
+                            num == (id + i) - 1 ||
+                            num == (id + i) ||
+                            num == (id + i) + 9 ||
+                            num == (id + i) + 10) {
+                            if (item.ship === true) {
+                                CloseTheShip += 1;
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                if (this.gameField[id + i].x == 0) {
+                    this.gameField.forEach(function (item, num) {
+                        if (num == (id + i) - 10 ||
+                            num == (id + i) - 9 ||
+                            num == (id + i) ||
+                            num == (id + i) + 1 ||
+                            num == (id + i) + 10 ||
+                            num == (id + i) + 11) {
+                            if (item.ship === true) {
+                                CloseTheShip += 1;
+                            }
+                        }
+                    });
+                }
+                if (this.gameField[id + i].x != 0 && this.gameField[id + i].x != 9) {
+                    this.gameField.forEach(function (item, num) {
+                        if (num == (id + i) - 11 ||
+                            num == (id + i) - 10 ||
+                            num == (id + i) - 9 ||
+                            num == (id + i) - 1 ||
+                            num == (id + i) ||
+                            num == (id + i) + 1 ||
+                            num == (id + i) + 9 ||
+                            num == (id + i) + 10 ||
+                            num == (id + i) + 11) {
+                            if (item.ship === true) {
+                                CloseTheShip += 1;
+                            }
+                        }
+                    });
+                }
             }
         }
-        else {
+        if (TurnTheShip === true) {
             let countCell = id;
             for (let i = 0; i < sizeShip; i++) {
-                this.gameField.forEach(function (item, num) {
-                    if (num == (countCell) - 11 ||
-                        num == (countCell) - 10 ||
-                        num == (countCell) - 9 ||
-                        num == (countCell) - 1 ||
-                        num == (countCell) ||
-                        num == (countCell) + 1 ||
-                        num == (countCell) + 9 ||
-                        num == (countCell) + 10 ||
-                        num == (countCell) + 11) {
-                        if (item.ship === true) {
-                            CloseTheShip += 1;
+                if (this.gameField[(countCell)].x == 9) {
+                    this.gameField.forEach(function (item, num) {
+                        if (num == (countCell) - 11 ||
+                            num == (countCell) - 10 ||
+                            num == (countCell) - 1 ||
+                            num == (countCell) ||
+                            num == (countCell) + 9 ||
+                            num == (countCell) + 10) {
+                            if (item.ship === true) {
+                                CloseTheShip += 1;
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                if (this.gameField[(countCell)].x == 0) {
+                    this.gameField.forEach(function (item, num) {
+                        if (num == (countCell) - 10 ||
+                            num == (countCell) - 9 ||
+                            num == (countCell) ||
+                            num == (countCell) + 1 ||
+                            num == (countCell) + 10 ||
+                            num == (countCell) + 11) {
+                            if (item.ship === true) {
+                                CloseTheShip += 1;
+                            }
+                        }
+                    });
+                }
+                if (this.gameField[countCell].x != 0 && this.gameField[countCell].x != 9) {
+                    this.gameField.forEach(function (item, num) {
+                        if (num == (countCell) - 11 ||
+                            num == (countCell) - 10 ||
+                            num == (countCell) - 9 ||
+                            num == (countCell) - 1 ||
+                            num == (countCell) ||
+                            num == (countCell) + 1 ||
+                            num == (countCell) + 9 ||
+                            num == (countCell) + 10 ||
+                            num == (countCell) + 11) {
+                            if (item.ship === true) {
+                                CloseTheShip += 1;
+                            }
+                        }
+                    });
+                }
                 countCell += 10;
             }
         }
-        if (CloseTheShip == 0) {
+        if (CloseTheShip === 0) {
             return true;
         }
         else {

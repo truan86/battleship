@@ -1,5 +1,8 @@
 @import "../../node_modules/bootstrap/less/bootstrap";
-
+*{
+  padding:0;
+  margin:0;
+}
 body {
   background-color: #ddd;
   .headerStart h1 {
@@ -8,7 +11,7 @@ body {
   .PlaceYourShips {
     width: 200px;
     float: left;
-    background-color:#F2EFEF ;
+    background-color: #F2EFEF;
     border-radius: 10px;
     margin-right: 5px;
     padding: 10px;
@@ -32,7 +35,11 @@ body {
     display: inline-block;
     background-color: #99C2E1;
     border-radius: 5px;
-    margin: 1px
+    margin: 1px;
+    padding: 2px;
+    font-size:30px;
+    text-align:center;
+    vertical-align:top;
   }
   .hover {
     background-color: grey;
@@ -40,5 +47,12 @@ body {
   .ship {
     background-color: black;
   }
-
+  .enemyField {
+     .hit{
+      background-color: red;
+    }
+    .missed{
+      background-color: white;
+    }
+  }
 }

@@ -15,7 +15,9 @@ class GameService {
                     "y": i,
                     "x": j,
                     "ship": false,
-                    "hover": false
+                    "hover": false,
+                    "missed": false,
+                    "hit":false
                 });
             }
         }
