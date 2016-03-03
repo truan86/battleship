@@ -3,17 +3,17 @@ import angular from 'angular';
 import angularUiRouter from 'angular-ui-router';
 
 import mainTemplate from '../partials/main.html';
-import startTemplate from '../partials/start.html';
+import gameTemplate from '../partials/game.html';
 import resultsTemplate from '../partials/results.html';
 
 import MainController from './main/main.js';
-import StartController from './start/start';
+import GameController from './game/index';
 import ResultsController from './results/results';
 import GameService from './service/service';
 
 angular.module("app", [angularUiRouter])
     .controller('MainController', MainController)
-    .controller('StartController', StartController)
+    .controller('GameController', GameController)
     .controller('ResultsController', ResultsController)
     .service('GameService', GameService)
 
@@ -27,9 +27,9 @@ angular.module("app", [angularUiRouter])
                 controller: 'MainController as main'
             })
             .state('start', {
-                url: '/start',
-                template: startTemplate,
-                controller: 'StartController as start'
+                url: '/game',
+                template: gameTemplate,
+                controller: 'GameController as game'
             })
             .state('results', {
                 url: '/results',

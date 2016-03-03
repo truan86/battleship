@@ -9,7 +9,9 @@ class GameService {
                     "y": i,
                     "x": j,
                     "ship": false,
-                    "hover": false
+                    "hover": false,
+                    "hit": false,
+                    "missed": false
                 });
                 this.enemyField.push({
                     "y": i,
@@ -17,7 +19,7 @@ class GameService {
                     "ship": false,
                     "hover": false,
                     "missed": false,
-                    "hit":false
+                    "hit": false
                 });
             }
         }
@@ -47,7 +49,13 @@ class GameService {
             "hide": false
         }];
 
-
+        this.countShip = function () {
+            let ships = 0;
+            this.shipList.forEach(function (item) {
+                ships += item.size;
+            });
+            return ships;
+        }
     }
 }
 
