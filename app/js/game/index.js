@@ -22,7 +22,6 @@ class StartController {
 
 
     startGameFn() {
-        this.enemyField = this.gameField.slice();
         this.showEnemyField = true;
     }
 
@@ -128,5 +127,6 @@ class StartController {
             }
         }
     }
+
 }
 export default StartController;

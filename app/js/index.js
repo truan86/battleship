@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 import angular from 'angular';
 import angularUiRouter from 'angular-ui-router';
+import io from 'socket.io-client';
 
 import mainTemplate from '../partials/main.html';
 import gameTemplate from '../partials/game.html';
@@ -11,12 +12,16 @@ import GameController from './game/index';
 import ResultsController from './results/results';
 import GameService from './service/service';
 
+
 angular.module("app", [angularUiRouter])
     .controller('MainController', MainController)
     .controller('GameController', GameController)
     .controller('ResultsController', ResultsController)
     .service('GameService', GameService)
-
+    .factory('socket', function ($rootScope) {
+        let socket = io.connect();
+        return socket;
+    })
     .config(function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/');
 
@@ -36,6 +41,7 @@ angular.module("app", [angularUiRouter])
                 template: resultsTemplate,
                 controller: 'ResultsController as result'
             });
-
     });
+
+
 
