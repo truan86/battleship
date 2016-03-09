@@ -31,7 +31,7 @@ angular.module("app", [angularUiRouter])
                 template: mainTemplate,
                 controller: 'MainController as main'
             })
-            .state('start', {
+            .state('game', {
                 url: '/game',
                 template: gameTemplate,
                 controller: 'GameController as game'

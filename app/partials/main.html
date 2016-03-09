@@ -1,13 +1,18 @@
+<button class="btn btn-primary" ui-sref="main">Home</button>
+<!--<button ui-sref="game" class="btn btn-primary">Start a new game</button>-->
+<button class="btn btn-primary" ui-sref="results">Results</button>
+<hr>
 <h1>main</h1>
 <p>you can join or create a room</p>
 <p>{{main.nameRoom}}</p>
 <form novalidate ng-submit="main.newRoom()">
-    <input placeholder="Name of room" type="text" ng-model="main.nameRoom" name="text" />
-    <input type="submit" id="submit" value="Submit" />
+    <input placeholder="Name of room" type="text" ng-model="main.nameRoom" name="text" required/>
+    <input type="submit" id="submit" value="Submit"/>
 </form>
 
 <hr>
 <h3>rooms</h3>
 <ul>
-    <li ng-repeat="room in main.rooms"><a ng-click="main.joinRoom(room.roomId)" id="{{room.roomId}}">{{room.roomName}}</a></li>
+    <li ng-repeat="room in main.rooms"><a ng-click="main.joinRoom(room.roomId)"
+                                          id="{{room.roomId}}">{{room.roomName}}</a></li>
 </ul>

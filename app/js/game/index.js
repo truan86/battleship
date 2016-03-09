@@ -2,8 +2,11 @@ import howCloseTheShip from './howCloseTheShip';
 import victory from './victory';
 import enemyShot from './enemyShot';
 
+let room = {};
+
 class StartController {
-    constructor(GameService) {
+    constructor(GameService, socket, $scope) {
+        let here = this;
         this.gameService = GameService;
         this.gameField = GameService.gameField;
         this.enemyField = GameService.enemyField;
@@ -13,6 +16,58 @@ class StartController {
         this.TurnTheShip = false;
         this.hideStartGame = true;
         this.showEnemyField = false;
+        this.canIshot = false;
+
+        socket.on('enemyShot', function (data) {
+            $scope.$apply(function () {
+                enemyShot(here.gameField, data.id);
+                if (data.yourTurn == true) {
+                    GameService.yourTurn = true;
+                }
+            });
+        });
+        socket.on('gameRoom', function (data) {
+            room = data;
+        });
+
+        socket.on('enemyField', function (data) {
+            $scope.$apply(function () {
+                here.showEnemyField = true;
+                here.enemyField = data;
+            });
+        });
+
+        this.startGameFn = function () {
+            socket.emit('startGame', {'gameField': this.gameField, 'room': room});
+            this.canIshot = true;
+        };
+
+
+        this.shot = function (id) {
+            if (this.canIshot) {
+                if (GameService.yourTurn) {
+                    if (this.enemyField[id].ship === false) {
+                        this.enemyField[id].missed = true;
+                        GameService.yourTurn = false;
+                        socket.emit('shot', {'id': id, 'room': room, 'yourTurn': true});
+                        victory(this.gameField, this.countShip);
+                    }
+                    else {
+                        this.enemyField[id].hit = true;
+                        victory(this.enemyField, this.countShip);
+                        socket.emit('shot', {'id': id, 'room': room, 'yourTurn': false});
+                    }
+                }
+                else {
+                    alert('it^s not your turn')
+                }
+            }
+            else {
+                alert('you must set the ships')
+            }
+        }
+
+
     }
 
     sizeShipFn(size, id) {
@@ -20,22 +75,6 @@ class StartController {
         this.shipListId = id;
     }
 
-
-    startGameFn() {
-        this.showEnemyField = true;
-    }
-
-    shot(id) {
-        if (this.enemyField[id].ship === false) {
-            this.enemyField[id].missed = true;
-            enemyShot(this.gameField);
-            victory(this.gameField, this.countShip);
-        }
-        else {
-            this.enemyField[id].hit = true;
-            victory(this.enemyField, this.countShip);
-        }
-    }
 
     hovered(id) {
         if (this.TurnTheShip === false) {

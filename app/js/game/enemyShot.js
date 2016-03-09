@@ -1,18 +1,10 @@
-let enemyShot = function (gameField) {
-    let randomShot = randomInteger(0, 99);
-    if (gameField[randomShot].ship == true) {
-        gameField[randomShot].hit = true;
-        enemyShot(gameField);
+let enemyShot = function (gameField,id) {
+    if (gameField[id].ship == true) {
+        gameField[id].hit = true;
     }
     else {
-        gameField[randomShot].missed = true;
+        gameField[id].missed = true;
     }
-};
-
-function randomInteger(min, max) {
-    var rand = min + Math.random() * (max + 1 - min);
-    rand = Math.floor(rand);
-    return rand;
 };
 
 export default enemyShot;

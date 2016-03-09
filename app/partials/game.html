@@ -6,13 +6,13 @@
             <li ng-repeat="ship in game.shipList track by $index"><a ng-click="game.sizeShipFn(ship.size,$index)"
                                                                      ng-hide="ship.hide">{{ship.name}} </a>
             </li>
-
         </ul>
         <p><a ng-click="(game.TurnTheShip == true)?game.TurnTheShip = false:game.TurnTheShip = true"
               class="btn btn-primary btn-lg" role="button">Turn the ship {{game.TurnTheShip}}</a></p>
         <button class="btn btn-success btn-lg" ng-hide="game.hideStartGame" ng-click="game.startGameFn()">Start game
         </button>
     </aside>
+
     <section class="mainField ">
 
         <div ng-repeat="cell in game.gameField track by $index"
@@ -22,13 +22,12 @@
              class="fieldCell"
              ng-class="{'ship': cell.ship , 'hover':cell.hover ,'hit': cell.hit , 'missed': cell.missed }"
              id="x:{{cell.x}}y:{{cell.y}}">
-
+            <span ng-if="cell.missed" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
         </div>
     </section>
 
-    <section ng-show="game.showEnemyField" class="enemyField ">
-
-        <div ng-repeat="cellEnemy in game.enemyField track by $index"
+    <section  ng-show="game.showEnemyField" class="enemyField ">
+        <div  ng-repeat="cellEnemy in game.enemyField track by $index"
              ng-click="game.shot($index)"
              class="enemyCell" ng-class="{'missed':cellEnemy.missed,'hit':cellEnemy.hit}">
             <span ng-if="cellEnemy.missed" class="glyphicon glyphicon-remove" aria-hidden="true"></span>

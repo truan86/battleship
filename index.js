@@ -12,12 +12,36 @@ var rooms = [];
 io.on('connection', function (socket) {
     socket.emit('rooms', rooms);
 
+
     socket.on('addRoom', function (data) {
-        console.log(data);
         rooms.push(data);
-        socket.emit('rooms', rooms);
+        socket.broadcast.emit('rooms', rooms);
+        socket.join(data.roomId.toString());
     });
     console.log('connect');
+
+    socket.on('joinRoom', function (data) {
+        socket.join(data.idRoom.toString());
+        var countRooms = 0;
+        rooms.forEach(function (item) {
+            if (data.idRoom == item.roomId) {
+                item.enemyId = data.mySocketid;
+                io.sockets.in(item.roomId).emit('gameRoom', item);
+                rooms.splice(countRooms,1);
+                socket.broadcast.emit('rooms', rooms);
+            }
+            else {
+                countRooms++;
+            }
+        });
+    });
+
+    socket.on('startGame', function (data) {
+        socket.broadcast.to(data.room.roomId).emit('enemyField', data.gameField);
+    });
+    socket.on('shot', function (data) {
+        socket.broadcast.to(data.room.roomId).emit('enemyShot', {'id': data.id, 'yourTurn': data.yourTurn});
+    });
 });
 
 
