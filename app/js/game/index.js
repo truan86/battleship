@@ -7,6 +7,7 @@ let room = {};
 class StartController {
     constructor(GameService, socket, $scope) {
         let here = this;
+        this.yourTurn = GameService.yourTurn;
         this.gameService = GameService;
         this.gameField = GameService.gameField;
         this.enemyField = GameService.enemyField;
@@ -17,12 +18,13 @@ class StartController {
         this.hideStartGame = true;
         this.showEnemyField = false;
         this.canIshot = false;
+        this.whoseTurn = false;
 
         socket.on('enemyShot', function (data) {
             $scope.$apply(function () {
                 enemyShot(here.gameField, data.id);
                 if (data.yourTurn == true) {
-                    GameService.yourTurn = true;
+                    here.yourTurn = true;
                 }
             });
         });
@@ -40,15 +42,16 @@ class StartController {
         this.startGameFn = function () {
             socket.emit('startGame', {'gameField': this.gameField, 'room': room});
             this.canIshot = true;
+            this.whoseTurn = true;
+            this.hideStartGame = true;
         };
-
 
         this.shot = function (id) {
             if (this.canIshot) {
-                if (GameService.yourTurn) {
+                if (this.yourTurn) {
                     if (this.enemyField[id].ship === false) {
                         this.enemyField[id].missed = true;
-                        GameService.yourTurn = false;
+                        this.yourTurn = false;
                         socket.emit('shot', {'id': id, 'room': room, 'yourTurn': true});
                         victory(this.gameField, this.countShip);
                     }

@@ -22,16 +22,12 @@ io.on('connection', function (socket) {
 
     socket.on('joinRoom', function (data) {
         socket.join(data.idRoom.toString());
-        var countRooms = 0;
-        rooms.forEach(function (item) {
+        rooms.forEach(function (item,i) {
             if (data.idRoom == item.roomId) {
                 item.enemyId = data.mySocketid;
                 io.sockets.in(item.roomId).emit('gameRoom', item);
-                rooms.splice(countRooms,1);
+                rooms.splice(i,1);
                 socket.broadcast.emit('rooms', rooms);
-            }
-            else {
-                countRooms++;
             }
         });
     });

@@ -9,8 +9,12 @@
         </ul>
         <p><a ng-click="(game.TurnTheShip == true)?game.TurnTheShip = false:game.TurnTheShip = true"
               class="btn btn-primary btn-lg" role="button">Turn the ship {{game.TurnTheShip}}</a></p>
-        <button class="btn btn-success btn-lg" ng-hide="game.hideStartGame" ng-click="game.startGameFn()">Start game
+        <button class="btn btn-success btn-lg" ng-hide="game.hideStartGame" ng-click="game.startGameFn()">Set ships
         </button>
+        <section ng-show="game.whoseTurn">
+            <h3 style="color:green" ng-show="game.yourTurn">you turn</h3>
+            <h3 style="color:red" ng-hide="game.yourTurn">opponent turn</h3>
+        </section>
     </aside>
 
     <section class="mainField ">
@@ -25,9 +29,12 @@
             <span ng-if="cell.missed" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
         </div>
     </section>
+    <section class="waitOpponent" ng-hide="game.showEnemyField">
+        <h1>Wait when opponent set the ships</h1>
+    </section>
 
-    <section  ng-show="game.showEnemyField" class="enemyField ">
-        <div  ng-repeat="cellEnemy in game.enemyField track by $index"
+    <section ng-show="game.showEnemyField" class="enemyField ">
+        <div ng-repeat="cellEnemy in game.enemyField track by $index"
              ng-click="game.shot($index)"
              class="enemyCell" ng-class="{'missed':cellEnemy.missed,'hit':cellEnemy.hit}">
             <span ng-if="cellEnemy.missed" class="glyphicon glyphicon-remove" aria-hidden="true"></span>
