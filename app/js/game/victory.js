@@ -6,7 +6,10 @@ let victory = function (field, countShip) {
         }
     });
     if (hitShips == countShip) {
-        alert('you Win!!!!!');
+        return true;
+    }
+    else{
+        return false;
     }
 };
 

@@ -5,7 +5,7 @@ import enemyShot from './enemyShot';
 let room = {};
 
 class StartController {
-    constructor(GameService, socket, $scope) {
+    constructor(GameService, socket, $scope, $state) {
         let here = this;
         this.yourTurn = GameService.yourTurn;
         this.gameService = GameService;
@@ -27,6 +27,10 @@ class StartController {
                     here.yourTurn = true;
                 }
             });
+        });
+        socket.on('youLost', function (data) {
+            alert('you lost!!!');
+            $state.go('main');
         });
         socket.on('gameRoom', function (data) {
             room = data;
@@ -53,11 +57,15 @@ class StartController {
                         this.enemyField[id].missed = true;
                         this.yourTurn = false;
                         socket.emit('shot', {'id': id, 'room': room, 'yourTurn': true});
-                        victory(this.gameField, this.countShip);
                     }
                     else {
                         this.enemyField[id].hit = true;
-                        victory(this.enemyField, this.countShip);
+                        if (victory(this.enemyField, this.countShip)) {
+                            alert('you win!!!!!');
+                            $state.go('main');
+                            socket.emit('imWin', room);
+                        }
+
                         socket.emit('shot', {'id': id, 'room': room, 'yourTurn': false});
                     }
                 }
@@ -66,7 +74,7 @@ class StartController {
                 }
             }
             else {
-                alert('you must set the ships')
+                alert('you must set ships')
             }
         }
 
