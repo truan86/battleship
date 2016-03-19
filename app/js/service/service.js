@@ -1,5 +1,6 @@
 class GameService {
     constructor() {
+        this.user = {};
         this.yourTurn = false;
         let fieldSize = 9;
         this.gameField = [];

@@ -16,15 +16,29 @@ var rooms = [];
 
 io.on('connection', function (socket) {
     socket.emit('rooms', rooms);
+    socket.on('login', function (data) {
+        var user = false;
+        dbUsers.forEach(function (item) {
+            if (data.name == item.name && data.password == item.password) {
+                user = true;
+            }
+        });
+        if (user) {
+            socket.emit('loginOk', data);
+        }
+        else {
+            socket.emit('loginError');
+        }
 
+    });
     socket.on('addUser', function (data) {
         if (doseExistUserName(dbUsers, data)) {
-            socket.emit('badUserName','bad name');
+            socket.emit('badUserName', 'bad name');
         }
         else {
             dbUsers.push({"name": data.name, "password": data.password});
             file.writeSync();
-            socket.emit('UserNameAddToDb','ok name')
+            socket.emit('UserNameAddToDb', data)
         }
     });
 
@@ -61,7 +75,6 @@ io.on('connection', function (socket) {
 http.listen(3000, function () {
     console.log('listening on *:3000');
 });
-
 
 
 var doseExistUserName = function (dbUsers, data) {
