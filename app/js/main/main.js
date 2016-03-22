@@ -1,10 +1,6 @@
 class MainController {
     constructor(GameService, socket, $scope, $state) {
-        if (localStorage.user) {
-            let user = angular.fromJson(localStorage.user);
-            socket.emit('login', {'name': user.name, 'password': user.password})
-        }
-        this.areYouLogin = false;
+        this.areYouLogin = GameService.areYouLogin;
         this.user = GameService.user;
         this.openRegistrationWindows = false;
         this.addedUserName = '';
@@ -18,7 +14,8 @@ class MainController {
                 GameService.user = data;
                 here.user = GameService.user;
                 localStorage.user = angular.toJson(GameService.user);
-                here.areYouLogin = true;
+                GameService.areYouLogin = true;
+                here.areYouLogin = GameService.areYouLogin;
                 here.openRegistrationWindows = false;
             });
         });
@@ -37,23 +34,29 @@ class MainController {
         });
         socket.on('UserNameAddToDb', function (data) {
             $scope.$apply(function () {
-                here.addedUserName = 'Ok!!User added to db';
                 GameService.user = data;
                 here.user = GameService.user;
                 localStorage.user = angular.toJson(GameService.user);
-                here.areYouLogin = true;
+                GameService.areYouLogin = true;
+                here.areYouLogin = GameService.areYouLogin;
                 here.openRegistrationWindows = false;
             });
         });
         this.newRoom = function () {
             let roomId = Math.round(Math.random() * 100000);
-            socket.emit('addRoom', {'roomId': roomId, 'roomName': this.nameRoom, 'mySocetid': socket.id});
+            socket.emit('addRoom', {
+                'roomId': roomId,
+                'roomName': here.user.name,
+                'mySocetid': socket.id,
+                "player1": here.user
+            });
             console.log('create room id:' + roomId);
             $state.go('game');
             GameService.yourTurn = true;
         };
+
         this.joinRoom = function (id) {
-            socket.emit('joinRoom', {'idRoom': id, 'mySocketid': socket.id});
+            socket.emit('joinRoom', {'idRoom': id, 'mySocketid': socket.id, "user": here.user});
             $state.go('game');
         };
 
@@ -67,7 +70,8 @@ class MainController {
             GameService.user = {};
             this.user = GameService.user;
             localStorage.clear();
-            this.areYouLogin = false;
+            GameService.areYouLogin = false;
+            here.areYouLogin = GameService.areYouLogin;
         }
     }
 }

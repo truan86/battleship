@@ -2,13 +2,10 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http, {origins: 'localhost:3000'}); //only on 3000 socket
-//var bodyParser = require('body-parser');
 
 var json = require('json-file');
 var file = json.read('./db/data.json');
 var dbUsers = file.get('users');
-//var urlencodedParser = bodyParser.urlencoded({extended: false});
-//app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.static(__dirname + '/dist'));
 
@@ -21,24 +18,23 @@ io.on('connection', function (socket) {
         dbUsers.forEach(function (item) {
             if (data.name == item.name && data.password == item.password) {
                 user = true;
+                socket.emit('loginOk', item);
             }
         });
-        if (user) {
-            socket.emit('loginOk', data);
-        }
-        else {
+        if (!user) {
             socket.emit('loginError');
         }
 
     });
     socket.on('addUser', function (data) {
+
         if (doseExistUserName(dbUsers, data)) {
             socket.emit('badUserName', 'bad name');
         }
         else {
-            dbUsers.push({"name": data.name, "password": data.password});
+            dbUsers.push({"name": data.name, "password": data.password, "games": 0, "win": 0});
             file.writeSync();
-            socket.emit('UserNameAddToDb', data)
+            socket.emit('UserNameAddToDb', {"name": data.name, "password": data.password, "games": 0, "win": 0});
         }
     });
 
@@ -51,9 +47,11 @@ io.on('connection', function (socket) {
 
     socket.on('joinRoom', function (data) {
         socket.join(data.idRoom.toString());
+        io.sockets.in(data.idRoom).emit('joinToRoom');
         rooms.forEach(function (item, i) {
             if (data.idRoom == item.roomId) {
                 item.enemyId = data.mySocketid;
+                item.player2 = data.user;
                 io.sockets.in(item.roomId).emit('gameRoom', item);
                 rooms.splice(i, 1);
                 socket.broadcast.emit('rooms', rooms);
@@ -68,7 +66,17 @@ io.on('connection', function (socket) {
         socket.broadcast.to(data.room.roomId).emit('enemyShot', {'id': data.id, 'yourTurn': data.yourTurn});
     });
     socket.on('imWin', function (data) {
-        socket.broadcast.to(data.roomId).emit('youLost');
+        dbUsers.forEach(function (item) {
+            if (item.name == data.user.name) {
+                item.win += 1;
+            }
+            if (item.name == data.room.player1.name || item.name == data.room.player2.name) {
+                item.games += 1;
+            }
+        });
+        file.writeSync();
+
+        socket.broadcast.to(data.room.roomId).emit('youLost');
     });
 });
 

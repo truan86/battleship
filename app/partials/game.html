@@ -16,8 +16,11 @@
             <h3 style="color:red" ng-hide="game.yourTurn">opponent turn</h3>
         </section>
     </aside>
+    <section class="wait" ng-show="game.myFieldhidden">
+        <h1>Wait when somebody join you</h1>
+    </section>
 
-    <section class="mainField ">
+    <section ng-hide="game.myFieldhidden" class="mainField ">
 
         <div ng-repeat="cell in game.gameField track by $index"
              ng-mouseover="game.hovered($index)"
@@ -32,6 +35,7 @@
     <section class="waitOpponent" ng-hide="game.showEnemyField">
         <h1>Wait when opponent set the ships</h1>
     </section>
+
 
     <section ng-show="game.showEnemyField" class="enemyField ">
         <div ng-repeat="cellEnemy in game.enemyField track by $index"

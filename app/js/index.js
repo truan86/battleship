@@ -39,7 +39,7 @@ angular.module("app", [angularUiRouter])
             .state('results', {
                 url: '/results',
                 template: resultsTemplate,
-                controller: 'ResultsController as result'
+                controller: 'ResultsController as results'
             });
     });
 
