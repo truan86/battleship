@@ -1,6 +1,9 @@
 import howCloseTheShip from './howCloseTheShip';
 import victory from './victory';
 import enemyShot from './enemyShot';
+import hover from './hovered';
+import liev from './liev';
+import setShips from './setShip';
 
 let room = {};
 
@@ -94,106 +97,33 @@ class StartController {
                 alert('you must set ships')
             }
         }
+    }
 
+    setShip(id) {
+        setShips(id, this.TurnTheShip, this.gameField, this.sizeShip, this.shipList, this.shipListId, this.hideStartGame);
+        this.sizeShip = 0;
+        let countHidenShipList = 0;
+        this.shipList.forEach(function (item) {
+            if (item.hide == true) {
+                countHidenShipList += 1;
+            }
+        });
+        if (countHidenShipList == this.shipList.length) {
+            this.hideStartGame = false;
+        }
+    }
 
+    lieved(id) {
+        liev(id, this.TurnTheShip, this.gameField, this.sizeShip);
+    }
+
+    hovered(id) {
+        hover(id, this.TurnTheShip, this.gameField, this.sizeShip);
     }
 
     sizeShipFn(size, id) {
         this.sizeShip = size;
         this.shipListId = id;
     }
-
-
-    hovered(id) {
-        if (this.TurnTheShip === false) {
-            if (+(this.gameField[id].x) + this.sizeShip < 11) {
-                if (howCloseTheShip(id, this.sizeShip, this.TurnTheShip, this.gameField)) {
-                    for (let i = id; i < id + this.sizeShip; i++) {
-                        this.gameField[i].hover = true;
-                    }
-                }
-            }
-        }
-        else {
-            if (+(this.gameField[id].y) + this.sizeShip < 11) {
-                if (howCloseTheShip(id, this.sizeShip, this.TurnTheShip, this.gameField)) {
-                    let countCell = id;
-                    for (let i = 0; i < this.sizeShip; i++) {
-                        this.gameField[countCell].hover = true;
-                        countCell += 10;
-                    }
-                }
-            }
-        }
-    }
-
-    lieved(id) {
-        if (this.TurnTheShip === false) {
-            if (+(this.gameField[id].x) + this.sizeShip < 11) {
-                if (howCloseTheShip(id, this.sizeShip, this.TurnTheShip, this.gameField)) {
-                    for (let i = id; i < id + this.sizeShip; i++) {
-                        this.gameField[i].hover = false;
-                    }
-                }
-            }
-        }
-        else {
-            if (+(this.gameField[id].y) + this.sizeShip < 11) {
-                if (howCloseTheShip(id, this.sizeShip, this.TurnTheShip, this.gameField)) {
-                    let countCell = id;
-                    for (let i = 0; i < this.sizeShip; i++) {
-                        this.gameField[countCell].hover = false;
-                        countCell += 10;
-                    }
-                }
-            }
-        }
-    }
-
-    setShip(id) {
-        if (this.TurnTheShip === false) {
-            if (+(this.gameField[id].x) + this.sizeShip < 11) {
-                if (howCloseTheShip(id, this.sizeShip, this.TurnTheShip, this.gameField)) {
-                    for (let i = id; i < id + this.sizeShip; i++) {
-                        this.gameField[i].ship = true;
-                    }
-                    this.sizeShip = 0;
-                    this.shipList[this.shipListId].hide = true;
-                    let countHidenShipList = 0;
-                    this.shipList.forEach(function (item) {
-                        if (item.hide == true) {
-                            countHidenShipList += 1;
-                        }
-                    });
-                    if (countHidenShipList == this.shipList.length) {
-                        this.hideStartGame = false;
-                    }
-                }
-            }
-        }
-        else {
-            if (+(this.gameField[id].y) + this.sizeShip < 11) {
-                if (howCloseTheShip(id, this.sizeShip, this.TurnTheShip, this.gameField)) {
-                    let countCell = id;
-                    for (let i = 0; i < this.sizeShip; i++) {
-                        this.gameField[countCell].ship = true;
-                        countCell += 10;
-                    }
-                    this.sizeShip = 0;
-                    this.shipList[this.shipListId].hide = true;
-                    let countHidenShipList = 0;
-                    this.shipList.forEach(function (item) {
-                        if (item.hide == true) {
-                            countHidenShipList += 1;
-                        }
-                    });
-                    if (countHidenShipList == this.shipList.length) {
-                        this.hideStartGame = false;
-                    }
-                }
-            }
-        }
-    }
-
 }
 export default StartController;

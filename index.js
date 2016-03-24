@@ -1,8 +1,7 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
-var io = require('socket.io')(http, {origins: 'localhost:3000'}); //only on 3000 socket
-
+var io = require('socket.io')(http, {origins: 'localhost:3000'}); //only on 3000
 var json = require('json-file');
 var file = json.read('./db/data.json');
 var dbUsers = file.get('users');
@@ -24,8 +23,8 @@ io.on('connection', function (socket) {
         if (!user) {
             socket.emit('loginError');
         }
-
     });
+
     socket.on('addUser', function (data) {
 
         if (doseExistUserName(dbUsers, data)) {
@@ -62,9 +61,11 @@ io.on('connection', function (socket) {
     socket.on('startGame', function (data) {
         socket.broadcast.to(data.room.roomId).emit('enemyField', data.gameField);
     });
+
     socket.on('shot', function (data) {
         socket.broadcast.to(data.room.roomId).emit('enemyShot', {'id': data.id, 'yourTurn': data.yourTurn});
     });
+
     socket.on('imWin', function (data) {
         dbUsers.forEach(function (item) {
             if (item.name == data.user.name) {
@@ -75,7 +76,6 @@ io.on('connection', function (socket) {
             }
         });
         file.writeSync();
-
         socket.broadcast.to(data.room.roomId).emit('youLost');
     });
 });
@@ -83,7 +83,6 @@ io.on('connection', function (socket) {
 http.listen(3000, function () {
     console.log('listening on *:3000');
 });
-
 
 var doseExistUserName = function (dbUsers, data) {
     var existUser = false;

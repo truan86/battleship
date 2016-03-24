@@ -1,11 +1,11 @@
-import howCloseTheShip from './howCloseTheShip';
+import howCloseTheShip from'./howCloseTheShip';
 
-let hover = function (id, TurnTheShip, gameField, sizeShip) {
+let liev = function (id, TurnTheShip, gameField, sizeShip) {
     if (TurnTheShip === false) {
         if (+(gameField[id].x) + sizeShip < 11) {
             if (howCloseTheShip(id, sizeShip, TurnTheShip, gameField)) {
                 for (let i = id; i < id + sizeShip; i++) {
-                    gameField[i].hover = true;
+                    gameField[i].hover = false;
                 }
             }
         }
@@ -15,7 +15,7 @@ let hover = function (id, TurnTheShip, gameField, sizeShip) {
             if (howCloseTheShip(id, sizeShip, TurnTheShip, gameField)) {
                 let countCell = id;
                 for (let i = 0; i < sizeShip; i++) {
-                    gameField[countCell].hover = true;
+                    gameField[countCell].hover = false;
                     countCell += 10;
                 }
             }
@@ -23,4 +23,4 @@ let hover = function (id, TurnTheShip, gameField, sizeShip) {
     }
 };
 
-export default hover;
+export default liev;
